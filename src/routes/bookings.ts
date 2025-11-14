@@ -84,9 +84,6 @@ router.post("/", async (req, res, next) => {
         need_pickup: parsed.need_pickup,
         line_user_id: parsed.line_user_id,
         line_display_name: parsed.line_display_name,
-        room: {
-          connect: { code: parsed.room_type },
-        },
       },
     });
 
