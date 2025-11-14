@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+ï»¿import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -6,25 +6,18 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 const defaultRooms = [
-  { code: "single", name: "µ¥ÈË·¿", total_rooms: 4, capacity: 1 },
-  { code: "double", name: "Ë«ÈË·¿", total_rooms: 4, capacity: 2 },
-  { code: "family", name: "¼ÒÍ¥·¿", total_rooms: 4, capacity: 4 }
+  { code: "single", name: "å–®äººæˆ¿", total_rooms: 4, capacity: 1 },
+  { code: "double", name: "é›™äººæˆ¿", total_rooms: 4, capacity: 2 },
+  { code: "family", name: "å®¶åº­æˆ¿", total_rooms: 4, capacity: 4 },
 ];
 
 async function main() {
-  for (const room of defaultRooms) {
-    await prisma.room.upsert({
-      where: { code: room.code },
-      update: {
-        name: room.name,
-        total_rooms: room.total_rooms,
-        capacity: room.capacity
-      },
-      create: room
-    });
-  }
+  await prisma.room.createMany({
+    data: defaultRooms,
+    skipDuplicates: true,
+  });
 
-  console.log("Seeded room inventory");
+  console.log("Seeded default rooms (idempotent)");
 }
 
 main()
