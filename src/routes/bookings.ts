@@ -87,18 +87,22 @@ router.post("/", async (req, res, next) => {
       },
     });
 
-    await sendBookingNotification({
-      id: booking.id,
-      check_in: booking.check_in.toISOString(),
-      check_out: booking.check_out.toISOString(),
-      room_type: booking.room_type,
-      people: booking.people,
-      name: booking.name,
-      phone: booking.phone,
-      need_pickup: booking.need_pickup,
-      line_user_id: booking.line_user_id,
-      line_display_name: booking.line_display_name,
-    });
+    try {
+      await sendBookingNotification({
+        id: booking.id,
+        check_in: booking.check_in.toISOString(),
+        check_out: booking.check_out.toISOString(),
+        room_type: booking.room_type,
+        people: booking.people,
+        name: booking.name,
+        phone: booking.phone,
+        need_pickup: booking.need_pickup,
+        line_user_id: booking.line_user_id,
+        line_display_name: booking.line_display_name,
+      });
+    } catch (err) {
+      console.error("Failed to send LINE booking notification", err);
+    }
 
     res.status(201).json({ id: booking.id });
   } catch (error) {
