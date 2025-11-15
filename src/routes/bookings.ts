@@ -56,7 +56,7 @@ router.post("/", async (req, res, next) => {
     });
 
     if (!room) {
-      return res.status(400).json({ error: "Invalid room type" });
+      return res.status(400).json({ error: "無效的房型" });
     }
 
     const overlappingCount = await prisma.booking.count({
@@ -69,7 +69,7 @@ router.post("/", async (req, res, next) => {
 
     if (overlappingCount >= room.total_rooms) {
       return res.status(400).json({
-        error: "Selected room type is not available for these dates",
+        error: "選擇的房型在這段日期已額滿",
       });
     }
 
@@ -104,7 +104,7 @@ router.post("/", async (req, res, next) => {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return res.status(400).json({
-        error: "Validation failed",
+        error: "資料驗證失敗",
         details: error.flatten(),
       });
     }
